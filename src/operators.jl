@@ -80,7 +80,10 @@ end
 
 function Base.:*(lhs::Unitful.Quantity, rhs::UnitExpression)
     factor = lhs * Unitful.Quantity(1.0, rhs.unit)
-    return UnitExpression(Unitful.ustrip(factor) * rhs.expr, Unitful.unit(factor))
+    return UnitExpression(
+        Unitful.ustrip(factor) * rhs.expr,
+        Unitful.unit(factor),
+    )
 end
 
 function Base.:*(lhs::Number, rhs::UnitExpression)
