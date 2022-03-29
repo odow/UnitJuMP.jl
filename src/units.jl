@@ -76,8 +76,7 @@ Unitful.uconvert(::U, x::UnitAffExpr{U}) where {U} = x
 
 function Unitful.uconvert(unit::Unitful.Units, x::UnitAffExpr)
     expr = copy(x.expr)
-    factor =
-        Unitful.ustrip(Unitful.uconvert(unit, Unitful.Quantity(1, x.unit)))
+    factor = Unitful.ustrip(Unitful.uconvert(unit, Unitful.Quantity(1, x.unit)))
     expr.constant *= factor
     for (k, v) in x.expr.terms
         expr.terms[k] = factor * v
@@ -95,7 +94,6 @@ struct _UnitConstraint{U<:Unitful.Units} <: AbstractConstraint
     constraint::ScalarConstraint
     unit::U
 end
-
 
 """
     UnitConstraintRef(::JuMP.ConstraintRef, ::Unitful.Units)

@@ -53,8 +53,9 @@ Base.:/(lhs::UnitVariableRef, rhs::Unitful.Quantity) = (*)(1.0 / rhs, lhs)
 # UnitVariableRef -- UnitVariableRef
 # Use the Unitful.unit of the lhs term
 function Base.:+(lhs::UnitVariableRef, rhs::UnitVariableRef)
-    factor =
-        Unitful.ustrip(Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)))
+    factor = Unitful.ustrip(
+        Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)),
+    )
     return UnitAffExpr(lhs.variable + factor * rhs.variable, lhs.unit)
 end
 
@@ -98,14 +99,16 @@ Base.:/(lhs::UnitAffExpr, rhs::Number) = (*)(1.0 / rhs, lhs)
 # UnitVariableRef -- UnitAffExpr
 # Use the Unitful.unit of the lhs term
 function Base.:+(lhs::UnitVariableRef, rhs::UnitAffExpr)
-    factor =
-        Unitful.ustrip(Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)))
+    factor = Unitful.ustrip(
+        Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)),
+    )
     return UnitAffExpr(lhs.variable + factor * rhs.expr, lhs.unit)
 end
 
 function Base.:+(lhs::UnitAffExpr, rhs::UnitVariableRef)
-    factor =
-        Unitful.ustrip(Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)))
+    factor = Unitful.ustrip(
+        Unitful.uconvert(lhs.unit, Unitful.Quantity(1.0, rhs.unit)),
+    )
     return UnitAffExpr(lhs.expr + factor * rhs.variable, lhs.unit)
 end
 
@@ -115,7 +118,9 @@ Base.:-(lhs::UnitAffExpr, rhs::UnitVariableRef) = (+)(lhs, -rhs)
 # UnitAffExpr -- UnitAffExpr
 # Use the Unitful.unit of the lhs term
 function Base.:+(lhs::UnitAffExpr, rhs::UnitAffExpr)
-    factor = Unitful.ustrip(Unitful.uconvert(lhs.unit, Unitful.Quantity(1, rhs.unit)))
+    factor = Unitful.ustrip(
+        Unitful.uconvert(lhs.unit, Unitful.Quantity(1, rhs.unit)),
+    )
     aff = JuMP.add_to_expression!(copy(lhs.expr), factor, rhs.expr)
     return UnitAffExpr(aff, lhs.unit)
 end
